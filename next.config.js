@@ -4,3 +4,13 @@ const nextConfig = {
 }
 
 module.exports = nextConfig
+module.exports = {
+  reactStrictMode: true,
+  images: {
+    domains: ['ipfs.infura.io']
+  },
+  rules: {
+    ignoreAtRules: ['tailwind']
+  }
+}
+
