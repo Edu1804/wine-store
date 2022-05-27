@@ -27,7 +27,8 @@ contract NFT is ERC721URIStorage {
         //set a new token id for the token to be minted
         _tokenIds.increment();
         uint256 newItemId = _tokenIds.current();
-
+        //tokenURI what is
+        //probar a cambiar el tokenURI por el hash
         _mint(msg.sender, newItemId); //mint the token
         _setTokenURI(newItemId, tokenURI); //generate the URI
         setApprovalForAll(contractAddress, true); //grant transaction permission to marketplace
@@ -36,4 +37,6 @@ contract NFT is ERC721URIStorage {
         return newItemId;
 
     }
+
+    
 }

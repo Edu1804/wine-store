@@ -23,6 +23,10 @@ contract NFTMarket is ReentrancyGuard {
         uint itemId;
         address nftContract;
         uint256 tokenId;
+        string hashId;
+        uint256 barricaTime;
+        uint256 harvestYear;
+        string typeWine;
         address payable seller; //person selling the nft
         address payable owner; //owner of the nft
         uint256 price;
@@ -37,11 +41,21 @@ contract NFTMarket is ReentrancyGuard {
         uint indexed itemId,
         address indexed nftContract,
         uint256 indexed tokenId,
+        string hashId,
+        uint256 barricaTime,
+        uint256 harvestYear,
+        string typeWine,
         address  seller,
         address  owner,
         uint256 price,
         bool sold
     );
+
+    function createHash(address nftContract, uint256  tokenId, uint256 barricaTime, string memory typeWine, uint256 harvestYear) public pure returns(bytes32){
+        //string memory result = typeWine;
+        return bytes32(keccak256(abi.encode('nftContract', 'tokenId', 'barricaTime', typeWine, 'harvestYear')));
+        //return bytes32(keccak256(abi.encode(result)));
+    }
 
     /// @notice function to get listingprice
     function getListingPrice() public view returns (uint256){
@@ -59,35 +73,48 @@ contract NFTMarket is ReentrancyGuard {
     function createMarketItem(
         address nftContract,
         uint256 tokenId,
+        string memory hashId,
+        uint256 barricaTime,
+        uint256 harvestYear,
+        string memory typeWine,
         uint256 price) public payable nonReentrant{
-         require(price > 0, "Price must be above zero");
-         require(msg.value == listingPrice, "Price must be equal to listing price");
+        require(price > 0, "Price must be above zero");
+        require(msg.value == listingPrice, "Price must be equal to listing price");
+        
+        _itemIds.increment(); //add 1 to the total number of items ever created
+        uint256 itemId = _itemIds.current();
+        //bytes32 hashId = createHash(nftContract, tokenId, barricaTime, typeWine, harvestYear);
 
-         _itemIds.increment(); //add 1 to the total number of items ever created
-         uint256 itemId = _itemIds.current();
-
-         idToMarketItem[itemId] = MarketItem(
-             itemId,
-             nftContract,
-             tokenId,
-             payable(msg.sender), //address of the seller putting the nft up for sale
-             payable(address(0)), //no owner yet (set owner to empty address)
-             price,
-             false
-         );
+        idToMarketItem[itemId] = MarketItem(
+            itemId,
+            nftContract,
+            tokenId,
+            hashId,
+            barricaTime,
+            harvestYear,
+            typeWine,
+            payable(msg.sender), //address of the seller putting the nft up for sale
+            payable(address(0)), //no owner yet (set owner to empty address)
+            price,
+            false
+        );
 
             //transfer ownership of the nft to the contract itself
             IERC721(nftContract).transferFrom(msg.sender, address(this), tokenId);
 
             //log this transaction
             emit MarketItemCreated(
-                itemId,
-             nftContract,
-             tokenId,
-             msg.sender,
-             address(0),
-             price,
-             false);
+            itemId,
+            nftContract,
+            tokenId,
+            hashId,
+            barricaTime,
+            harvestYear,
+            typeWine,
+            msg.sender,
+            address(0),
+            price,
+            false);
 
         }
 

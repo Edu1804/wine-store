@@ -24,10 +24,16 @@ describe("NFTMarket", function () {
     await nft.createToken("https://www.mytokenlocation.com");
     await nft.createToken("https://www.mytokenlocation2.com");
 
-    //create 2 test nfts
-    await market.createMarketItem(nftContractAddress, 1, auctionPrice, {value: listingPrice} );
+    //adding extra values
+    const barricaTime=5;
+    const harvestYear=1967;
+    const typeWine="tinto";
+    let hashId=await market.createHash("marketAddress", "tokenId", barricaTime.toString(), typeWine.toString(), harvestYear.toString()).toString();
 
-    await market.createMarketItem(nftContractAddress, 2, auctionPrice, {value: listingPrice} );
+    //create 2 test nfts
+    await market.createMarketItem(nftContractAddress, 1, hashId, barricaTime, harvestYear, typeWine, auctionPrice, {value: listingPrice} );
+
+    await market.createMarketItem(nftContractAddress, 2, hashId, barricaTime, harvestYear, typeWine, auctionPrice, {value: listingPrice} );
 
     const [_, buyerAddress ] = await ethers.getSigners();
 
@@ -40,9 +46,13 @@ describe("NFTMarket", function () {
        items = await Promise.all(items.map(async i => {
         const tokenUri = await nft.tokenURI(i.tokenId);
 
-        let item = {
+        let items = {
           price: i.price.toString(),
-          tokenId: i.tokenId.toString(),
+          tokenId: i.tokenId,
+          hash: i.hashId,
+          barrelTime: i.barricaTime.toString(),
+          harvestYear: i.harvestYear.toString(),
+          typeWine: i.typeWine.toString(),
           seller: i.seller,
           owner: i.owner,
           tokenUri

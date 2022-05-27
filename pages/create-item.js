@@ -4,6 +4,7 @@ import { create as ipfsHttpClient } from 'ipfs-http-client'
 import { useRouter } from 'next/router'
 import Web3Modal from 'web3modal'
 
+
 const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0');
 
 import {
@@ -12,12 +13,12 @@ import {
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
 import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
 import { EtherscanProvider } from '@ethersproject/providers'
-import Image from 'next/Image'
+import Image from 'next/image'
 
 
 export default function CreateItem() {
     const [fileUrl, setFileUrl] = useState(null)
-    const [formInput, updateFormInput] = useState({price: '', name: '', description:''})
+    const [formInput, updateFormInput] = useState({price: '', name: '', description:'', barricaTime:'', harvestYear:'', typeGrape:''})
     const router = useRouter();
 
     async function onChange(e) {
@@ -39,15 +40,15 @@ export default function CreateItem() {
 
     //1. create item (image/video) and upload to ipfs
     async function createItem(){
-        const {name, description, price} = formInput; //get the value from the form input
+        const {name, description, price, barricaTime, harvestYear, typeWine} = formInput; //get the value from the form input
         
         //form validation
-        if(!name || !description || !price || !fileUrl) {
+        if(!name || !description || !barricaTime || !harvestYear || !typeWine || !price || !fileUrl) {
             return
         }
 
         const data = JSON.stringify({
-            name, description, image: fileUrl
+            name, description, barricaTime, harvestYear, typeWine, image: fileUrl
         });
 
         try{
@@ -69,12 +70,14 @@ export default function CreateItem() {
         //sign the transaction
         const signer = provider.getSigner();
         let contract = new ethers.Contract(nftaddress, NFT.abi, signer);
-        let transaction = await contract.createToken(url);
+        let transaction = await contract.createToken(contract.createHash(nftaddress, tokenId, barricaTime, typeWine, harvestYear).toString());
+        //let transaction = await contract.createToken(tokenUri)
         let tx = await transaction.wait()
 
         //get the tokenId from the transaction that occured above
         //there events array that is returned, the first item from that event
         //is the event, third item is the token id.
+        //console.log('Hash: ', contract.createHash(nftaddress, tokenId, barricaTime, typeWine, harvestYear).toString())
         console.log('Transaction: ',tx)
         console.log('Transaction events: ',tx.events[0])
         let event = tx.events[0]
@@ -83,6 +86,9 @@ export default function CreateItem() {
 
         //get a reference to the price entered in the form 
         const price = ethers.utils.parseUnits(formInput.price, 'ether')
+        const barricaTime = formInput.barricaTime
+        const harvestYear = formInput.harvestYear
+        const typeWine = formInput.typeWine
 
         contract = new ethers.Contract(nftmarketaddress, Market.abi, signer);
 
@@ -91,7 +97,7 @@ export default function CreateItem() {
         listingPrice = listingPrice.toString()
 
         transaction = await contract.createMarketItem(
-            nftaddress, tokenId, price, {value: listingPrice }
+            nftaddress, tokenId, barricaTime, harvestYear, typeWine, price, {value: listingPrice }
         )
 
         await transaction.wait()
@@ -104,15 +110,32 @@ export default function CreateItem() {
         <div className="flex justify-center">
             <div className="w-1/2 flex flex-col pb-12">
                 <input 
-                    placeholder="Asset Name"
+                    placeholder="Name"
                     className="mt-8 border rounded p-4"
                     onChange={e => updateFormInput({...formInput, name: e.target.value})}
                     />
                 <textarea
-                     placeholder="Asset description"
-                     className="mt-2 border rounded p-4"
-                     onChange={e => updateFormInput({...formInput, description: e.target.value})}
-                     />
+                     placeholder="Select the type of wine"
+                     className="mt-8 border rounded p-4"
+                     onChange={e => updateFormInput({...formInput, typeWine: e.target.value})}
+                />
+                <input 
+                    placeholder="Year of the harvest"
+                    className="mt-8 border rounded p-4"
+                    type="number"
+                    onChange={e => updateFormInput({...formInput, harvestYear: e.target.value})}
+                    />
+                <textarea
+                    placeholder="Description"
+                    className="mt-8 border rounded p-4"
+                    onChange={e => updateFormInput({...formInput, description: e.target.value})}
+                    />
+                <input 
+                    placeholder="Amount of months in wine barrels"
+                    className="mt-8 border rounded p-4"
+                    type="number"
+                    onChange={e => updateFormInput({...formInput, barricaTime: e.target.value})}
+                    />
                 <input 
                     placeholder="Asset Price in Eth"
                     className="mt-8 border rounded p-4"
@@ -130,7 +153,7 @@ export default function CreateItem() {
                            
                             <Image
                             src={fileUrl}
-                            alt="Picture of the author"
+                            alt="Picture of the bottle wine"
                             className="rounded mt-4"
                             width={350}
                             height={500} 
