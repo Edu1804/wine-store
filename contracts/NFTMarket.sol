@@ -23,7 +23,7 @@ contract NFTMarket is ReentrancyGuard {
         uint itemId;
         address nftContract;
         uint256 tokenId;
-        string hashId;
+        //string hashId;
         uint256 barricaTime;
         uint256 harvestYear;
         string typeWine;
@@ -41,7 +41,6 @@ contract NFTMarket is ReentrancyGuard {
         uint indexed itemId,
         address indexed nftContract,
         uint256 indexed tokenId,
-        string hashId,
         uint256 barricaTime,
         uint256 harvestYear,
         string typeWine,
@@ -73,7 +72,6 @@ contract NFTMarket is ReentrancyGuard {
     function createMarketItem(
         address nftContract,
         uint256 tokenId,
-        string memory hashId,
         uint256 barricaTime,
         uint256 harvestYear,
         string memory typeWine,
@@ -89,7 +87,6 @@ contract NFTMarket is ReentrancyGuard {
             itemId,
             nftContract,
             tokenId,
-            hashId,
             barricaTime,
             harvestYear,
             typeWine,
@@ -107,7 +104,6 @@ contract NFTMarket is ReentrancyGuard {
             itemId,
             nftContract,
             tokenId,
-            hashId,
             barricaTime,
             harvestYear,
             typeWine,

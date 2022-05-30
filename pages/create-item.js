@@ -70,8 +70,8 @@ export default function CreateItem() {
         //sign the transaction
         const signer = provider.getSigner();
         let contract = new ethers.Contract(nftaddress, NFT.abi, signer);
-        let transaction = await contract.createToken(contract.createHash(nftaddress, tokenId, barricaTime, typeWine, harvestYear).toString());
-        //let transaction = await contract.createToken(tokenUri)
+        //let transaction = await contract.createToken(contract.createHash(nftaddress, tokenId, barricaTime, typeWine, harvestYear).toString());
+        let transaction = await contract.createToken(url)
         let tx = await transaction.wait()
 
         //get the tokenId from the transaction that occured above
