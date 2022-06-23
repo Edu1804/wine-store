@@ -24,7 +24,7 @@ export default function MyAssets() {
     //   network: "mainnet",
     //   cacheProvider: true,
     // })
-    const web3Modal = new Web3Modal()
+  const web3Modal = new Web3Modal()
     const connection = await web3Modal.connect()
     const provider = new ethers.providers.Web3Provider(connection)
     const signer = provider.getSigner()
@@ -61,7 +61,7 @@ export default function MyAssets() {
 
                 <Image
                             src={nft.image}
-                            alt="Picture of the author"
+                            alt="Picture of the wine"
                             className="rounded"
                             width={700}
                             height={800} 

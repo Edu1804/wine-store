@@ -69,8 +69,11 @@ export default function Home() {
   }
 
   if(loadingState === 'loaded' && !nfts.length) return (
-    <h1 className="px-20 py-10 text-3xl">No items in market place</h1>
+    <div>
+      <h1 className="px-20 py-10 text-3xl">No products available</h1>
+    </div>
   )
+  
 
   return (
    <div className="flex justify-center">
@@ -82,7 +85,7 @@ export default function Home() {
              
               <Image
                   src={nft.image}
-                  alt="Picture of the author"
+                  alt="Picture of the wine"
                   width={700}
                   height={800}
                   // blurDataURL="data:..." automatically provided
@@ -101,7 +104,7 @@ export default function Home() {
                   {nft.price} ETH
                 </p>
                 <button className="w-full bg-pink-500 text-white font-bold py-2 px-12 rounded"
-                onClick={() => buyNFT(nft)}>Buy NFT</button>
+                onClick={() => buyNFT(nft)}>Buy</button>
             </div>
             </div>
           ))

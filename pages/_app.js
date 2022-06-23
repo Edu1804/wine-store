@@ -15,17 +15,12 @@ function MyApp({ Component, pageProps }) {
           </Link>
           <Link href="/create-item">
             <a className="mr-6 text-pink-500">
-              Sell Digital Asset
-            </a>
-          </Link>
-          <Link href="/my-assets">
-            <a className="mr-6 text-pink-500">
-              My Digital Assets
+              Sell bottle of wine
             </a>
           </Link>
           <Link href="/creator-dashboard">
             <a className="mr-6 text-pink-500">
-              Creator Dashboard
+              My products
             </a>
           </Link>
         </div>

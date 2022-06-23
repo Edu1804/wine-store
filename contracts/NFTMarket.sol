@@ -169,7 +169,6 @@ contract NFTMarket is ReentrancyGuard {
         function fetchMyNFTs() public view returns (MarketItem[] memory){
             //get total number of items ever created
             uint totalItemCount = _itemIds.current();
-
             uint itemCount = 0;
             uint currentIndex = 0;
 

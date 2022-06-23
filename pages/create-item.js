@@ -3,10 +3,7 @@ import {ethers } from 'ethers'
 import { create as ipfsHttpClient } from 'ipfs-http-client'
 import { useRouter } from 'next/router'
 import Web3Modal from 'web3modal'
-
-
 const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0');
-
 import {
     nftaddress,nftmarketaddress
 } from '../config';
@@ -14,8 +11,8 @@ import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
 import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
 import { EtherscanProvider } from '@ethersproject/providers';
 import Image from 'next/image';
-//import {Image} from "react-native";
 
+//this function allow you to create an item (wine bottle)
 export default function CreateItem() {
     const [fileUrl, setFileUrl] = useState(null)
     const [formInput, updateFormInput] = useState({price: '', name: '', description:'', barricaTime:'', harvestYear:'', typeGrape:''})
@@ -43,7 +40,7 @@ export default function CreateItem() {
         const {name, description, price, barricaTime, harvestYear, typeWine} = formInput; //get the value from the form input
         
         //form validation
-        if(!name || !description || !barricaTime || !harvestYear || !typeWine || !price || !fileUrl) {
+        if(!name || !typeWine || !price || !fileUrl) {
             return
         }
 
@@ -110,35 +107,36 @@ export default function CreateItem() {
         <div className="flex justify-center">
             <div className="w-1/2 flex flex-col pb-12">
                 <input 
-                    placeholder="Name"
+                    placeholder="Product name"
                     className="mt-8 border rounded p-4"
                     onChange={e => updateFormInput({...formInput, name: e.target.value})}
                     />
-                <textarea
-                     placeholder="Select the type of wine"
-                     className="mt-8 border rounded p-4"
+                <input
+                     placeholder="Type of wine"
+                     className="mt-10 border rounded p-4"
                      onChange={e => updateFormInput({...formInput, typeWine: e.target.value})}
                 />
-                <input 
-                    placeholder="Year of the harvest"
-                    className="mt-8 border rounded p-4"
-                    type="number"
-                    onChange={e => updateFormInput({...formInput, harvestYear: e.target.value})}
-                    />
-                <textarea
+                <input
                     placeholder="Description"
-                    className="mt-8 border rounded p-4"
+                    className="mt-4 border rounded p-6"
                     onChange={e => updateFormInput({...formInput, description: e.target.value})}
                     />
                 <input 
+                    placeholder="Year of the harvest"
+                    className="mt-4 border rounded p-4"
+                    type="number"
+                    onChange={e => updateFormInput({...formInput, harvestYear: e.target.value})}
+                    />
+                
+                <input 
                     placeholder="Amount of months in wine barrels"
-                    className="mt-8 border rounded p-4"
+                    className="mt-4 border rounded p-4"
                     type="number"
                     onChange={e => updateFormInput({...formInput, barricaTime: e.target.value})}
                     />
                 <input 
-                    placeholder="Asset Price in Eth"
-                    className="mt-8 border rounded p-4"
+                    placeholder="Price in Eth"
+                    className="mt-4 border rounded p-4"
                     type="number"
                     onChange={e => updateFormInput({...formInput, price: e.target.value})}
                     />
@@ -164,7 +162,7 @@ export default function CreateItem() {
                     }
                     <button onClick={createItem}
                      className="font-bold mt-4 bg-pink-500 text-white rounded p-4 shadow-lg"
-                     >Create NFT</button>
+                     >Publish my bottle of wine</button>
             </div>
         </div>
     )
