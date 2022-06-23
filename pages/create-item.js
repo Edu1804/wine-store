@@ -12,9 +12,9 @@ import {
 } from '../config';
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
 import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
-import { EtherscanProvider } from '@ethersproject/providers'
-import Image from 'next/image'
-
+import { EtherscanProvider } from '@ethersproject/providers';
+import Image from 'next/image';
+//import {Image} from "react-native";
 
 export default function CreateItem() {
     const [fileUrl, setFileUrl] = useState(null)
@@ -54,7 +54,7 @@ export default function CreateItem() {
         try{
             const added = await client.add(data)
             const url = `https://ipfs.infura.io/ipfs/${added.path}`
-            //pass the url to sav eit on Polygon adter it has been uploaded to IPFS
+            //pass the url to save it on Polygon after it has been uploaded to IPFS
             createSale(url)
         }catch(error){
             console.log(`Error uploading file: `, error)
@@ -155,8 +155,8 @@ export default function CreateItem() {
                             src={fileUrl}
                             alt="Picture of the bottle wine"
                             className="rounded mt-4"
-                            width={350}
-                            height={500} 
+                            width={700}
+                            height={800} 
                             // blurDataURL="data:..." automatically provided
                             // placeholder="blur" // Optional blur-up while loading
                           />

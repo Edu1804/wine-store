@@ -9,7 +9,7 @@ import {
 
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
 import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
-
+import Image from 'next/image';
 export default function Home() {
   const [nfts, setNfts] = useState([]);
   const [loadingState, setLoadingState] = useState('not-loaded');
@@ -83,8 +83,8 @@ export default function Home() {
               <Image
                   src={nft.image}
                   alt="Picture of the author"
-                  width={500}
-                  height={500}
+                  width={700}
+                  height={800}
                   // blurDataURL="data:..." automatically provided
                   // placeholder="blur" // Optional blur-up while loading
                 />

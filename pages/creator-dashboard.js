@@ -2,7 +2,7 @@ import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Web3Modal from "web3modal"
-import Image from 'next/image'
+import Image from "next/image";
 
 import {
   nftmarketaddress, nftaddress
@@ -68,8 +68,8 @@ export default function CreatorDashboard() {
                             src={nft.image}
                             alt="Picture of the author"
                             className="rounded"
-                            width={250}
-                            height={300} 
+                            width={700}
+                            height={800} 
                             // blurDataURL="data:..." automatically provided
                             // placeholder="blur" // Optional blur-up while loading
                           />
