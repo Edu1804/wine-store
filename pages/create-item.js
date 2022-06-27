@@ -31,15 +31,16 @@ export default function CreateItem() {
             const url = `https://ipfs.infura.io/ipfs/${added.path}`
             setFileUrl(url)
         }catch(e){
-            console.log('Error uploading file: ', e)
+            console.log('Error uploading the file: ', e)
         }
     }
 
-    //1. create item (image/video) and upload to ipfs
+    //1. create item (image) and upload to ipfs
     async function createItem(){
         const {name, description, price, barricaTime, harvestYear, typeWine} = formInput; //get the value from the form input
         
-        //form validation
+        //form validation 
+        //check that there every field is fill
         if(!name || !typeWine || !price || !fileUrl) {
             return
         }
@@ -51,14 +52,13 @@ export default function CreateItem() {
         try{
             const added = await client.add(data)
             const url = `https://ipfs.infura.io/ipfs/${added.path}`
-            //pass the url to save it on Polygon after it has been uploaded to IPFS
             createSale(url)
         }catch(error){
             console.log(`Error uploading file: `, error)
         }
     }
 
-    //2. List item for sale
+    //list item for sale with its price
     async function createSale(url){
         const web3Modal = new Web3Modal();
         const connection = await web3Modal.connect();
@@ -67,14 +67,10 @@ export default function CreateItem() {
         //sign the transaction
         const signer = provider.getSigner();
         let contract = new ethers.Contract(nftaddress, NFT.abi, signer);
-        //let transaction = await contract.createToken(contract.createHash(nftaddress, tokenId, barricaTime, typeWine, harvestYear).toString());
         let transaction = await contract.createToken(url)
         let tx = await transaction.wait()
 
-        //get the tokenId from the transaction that occured above
-        //there events array that is returned, the first item from that event
-        //is the event, third item is the token id.
-        //console.log('Hash: ', contract.createHash(nftaddress, tokenId, barricaTime, typeWine, harvestYear).toString())
+        //get the tokenId from the transaction 
         console.log('Transaction: ',tx)
         console.log('Transaction events: ',tx.events[0])
         let event = tx.events[0]
@@ -96,11 +92,8 @@ export default function CreateItem() {
         transaction = await contract.createMarketItem(
             nftaddress, tokenId, barricaTime, harvestYear, typeWine, price, {value: listingPrice }
         )
-
         await transaction.wait()
-
         router.push('/')
-
     }
 
     return (

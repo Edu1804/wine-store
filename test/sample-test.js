@@ -28,9 +28,9 @@ describe("NFTMarket", function () {
     const barricaTime=5;
     const harvestYear=1967;
     const typeWine="tinto";
-    //const hashId=await market.createHash("marketAddress", "tokenId", barricaTime.toString(), typeWine.toString(), harvestYear.toString()).toString();
     
-    //create 2 test nfts
+    
+    //create test 
     await market.createMarketItem(nftContractAddress, 1,  barricaTime, harvestYear, typeWine, auctionPrice, {value: listingPrice} );
 
     await market.createMarketItem(nftContractAddress, 2,  barricaTime, harvestYear, typeWine, auctionPrice, {value: listingPrice} );

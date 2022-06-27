@@ -53,7 +53,9 @@ export default function CreatorDashboard() {
     setNfts(items)
     setLoadingState('loaded')
   }
-  if (loadingState === 'loaded' && !nfts.length) return (<h1 className="py-10 px-20 text-3xl">No bottles of wine created</h1>)
+  if (loadingState === 'loaded' && !nfts.length){
+    return (<h1 className="py-10 px-20 text-3xl">No bottles of wine created</h1>)
+  } 
   return (
     <div>
       <div className="p-4">
@@ -106,3 +108,6 @@ export default function CreatorDashboard() {
     </div>
   )
 }
+
+
+
